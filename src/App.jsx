@@ -5,6 +5,8 @@ import "leaflet/dist/leaflet.css";
 import Routing from "./Routing";
 import { useState } from "react";
 
+//baru
+
 export default function App() {
   const [position, setPosition] = useState({start:[-6.3059358475001135, 106.75275203904764], end:null})
   const [infoMap, setInfoMap] = useState(null)

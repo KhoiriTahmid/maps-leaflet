@@ -46,7 +46,7 @@ export default function App() {
       <Router>
         <Routes>
           <Route path='/' >
-            <Route index element={<HalamanDepan />} />
+            <Route index element={<HalamanDepan data={data} setData={setData} refresh={refresh}/>} />
             <Route path='/Login' element={<Login setUser={setUser}/>} />
             <Route path='/Daftar' element={<Daftar refreshing={refreshing} setUser={setUser} typeTambah={"tambahUser"}/>} />
             <Route path='/User' element={<MainPage user={user} type={'user'}/>} >

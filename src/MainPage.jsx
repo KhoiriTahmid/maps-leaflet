@@ -21,11 +21,11 @@ export default function MainPage({user, type, data, setData}) {
         return null; // atau bisa return loading spinner atau apapun yang Anda mau
       }
   return (
-    <div>
+    <div className=''>
         {/* {page=="classdata"? <UserDashboard data={data} setData={setData} />:<Profile user={user} classData={data}/>} */}
         <Outlet data={data} user={user} setData={setData}/>
         <div className="fixed top-0 left-0 cursor-pointer m-10" onClick={()=>setToggle(!toggle)}><Burger/></div>
-        <div className="w-fit h-screen z-50"><Sidebar type={type} toggle={toggle} setPage={setPage} setToggle={setToggle}/></div>
+        <div className="w-fit h-screen fixed top-0 z-50"><Sidebar type={type} toggle={toggle} setPage={setPage} setToggle={setToggle}/></div>
     </div>
   )
 }

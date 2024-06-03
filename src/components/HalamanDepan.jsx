@@ -89,7 +89,7 @@ const Tabel = ({refresh, data, setData}) => {
         </table>
       </div>
     </section>
-    {route && (<div className=' flex justify-center items-center w-screen bg-red-900 h-screen fixed top-0 left-0 z-50'><MapWithSide  type={"showOnDash"}  h={`30rem`} w={"75%"} user={clicked}/></div>)}
+    {route && (<div className=' flex justify-center items-center w-screen h-screen fixed top-0 left-0 z-50'><MapWithSide  type={"showOnDash"}  h={`30rem`} w={"75%"} user={clicked}/></div>)}
   </>
   );
 };

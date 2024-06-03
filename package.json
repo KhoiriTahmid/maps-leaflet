@@ -10,11 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "firebase": "^10.12.1",
     "leaflet": "^1.9.4",
+    "leaflet-geosearch": "^4.0.0",
     "leaflet-routing-machine": "^3.2.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-leaflet": "^4.2.1"
+    "react-leaflet": "^4.2.1",
+    "react-router-dom": "^6.23.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

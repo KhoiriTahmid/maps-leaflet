@@ -1,54 +1,118 @@
-import { MapContainer, TileLayer } from "react-leaflet";
+
 import "./index.css";
-import "leaflet/dist/leaflet.css";
+import {BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import Map from "./Map";
 
 import Routing from "./Routing";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-//baru
+import { readDataMhs, addDataMhs, updateDataMhs, deleteDataMhs, readDataHistory, addDataHistory } from "./firestoreConnect";
+import MainPage from "./MainPage";
+import UserProfile from "./components/user/UserProfile";
+import UserDashboard from "./components/user/UserDashboard";
+import AdminHistory from "./components/admin/AdminHistory";
+import AdminDashboard from "./components/admin/AdminDashboard";
+import Login from "./components/Login";
+import HalamanDepan from "./components/HalamanDepan";
+import { set } from "firebase/database";
+import Daftar from "./components/Daftar";
+import NotFound from "./NotFound";
+
+// var u need : userState, 
 
 export default function App() {
-  const [position, setPosition] = useState({start:[-6.3059358475001135, 106.75275203904764], end:null})
-  const [infoMap, setInfoMap] = useState(null)
+  const [user, setUser] = useState(() => {
+    const authToken = localStorage.getItem('authToken');
+    return authToken ? JSON.parse(authToken) : null;
+  });// diisi pas login atau crate akun
+  const [data, setData] = useState([])
+  const [history, setHistory] = useState([])
+  const [refresh, setRefresh] = useState(false)
 
-  return (
-    <div className="mx-auto h-screen w-screen overflow-hidden no-scrollbar">
-      <div className="flex m-5 rounded-xl overflow-clip">
-        <MapContainer style={{ height: "94vh", width: "75%" }} className="" center={position.start} zoom={13} >
-          <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            
-          />
-          <Routing setInfoMap={setInfoMap}  position={position} setPosition={setPosition}/>
-        </MapContainer>
-        <SideBarMaps infoMap={infoMap} />
-      </div>
-    </div>
-  );
-}
+  function refreshing() {
+    setRefresh(!refresh)
+  }
 
-const SideBarMaps = ({infoMap})=>{
+  useEffect(()=>{
+    console.log(user)
+  },[])
   
-  console.log(infoMap)
-  return(
+  
+// buat kalo ngetik path dalem, gak bisa kebuka
+
+// route path
+  return (
     <>
-    {infoMap!=null ? (<div className=" pl-3 gap-2 flex flex-col h-[94vh] w-[35%] text-slate-100 bg-slate-800 z-50">
-    <div className="header mb-3 mt-3 flex flex-col gap-3 text-xl font-bold">
-      <p className="">Asal : {infoMap[0].name.slice(0,infoMap[0].name.indexOf(","))} / FST</p>
-      <p className="">Tujuan : {infoMap[0].name.slice(infoMap[0].name.indexOf(",")+1)}</p>
-      <p className=" text-base font-medium">{Math.floor(infoMap[0].summary.totalTime/60)} menit ({Math.floor(infoMap[0].summary.totalDistance/1000)} km)</p>
-    </div>
-    {infoMap[0].instructions.map(e=>{
-      return (
-        <div className="">
-          <p className=" text-lg font-semibold">{e.type=="Head" || e.type=="DestinationReached"? e.type:e.text }</p>
-          <p className=" text-sm font-light">{e.distance} m</p>
-        </div>
-      )
-    })}
-  </div>):<div className=" pl-3 gap-2 flex flex-col h-[94vh] w-[35%] text-slate-100 bg-slate-800 z-50">masuka alamat anda</div>
-}
-        </>
-  )
-}
+      <Router>
+        <Routes>
+          <Route path='/' >
+            <Route index element={<HalamanDepan />} />
+            <Route path='/Login' element={<Login setUser={setUser}/>} />
+            <Route path='/Daftar' element={<Daftar refreshing={refreshing} setUser={setUser} typeTambah={"tambahUser"}/>} />
+            <Route path='/User' element={<MainPage user={user} type={'user'}/>} >
+              <Route path='Dashboard' element={<UserDashboard refresh={refresh} refreshing={refreshing}  user={user} setUser={setUser} data={data} setData={setData} />} />
+              <Route path='Profile' element={<UserProfile refreshing={refreshing} setUser={setUser} user={user}/>} />
+            </Route>
+            <Route path='/Admin' element={<MainPage user={user} type={'admin'}/>} >
+              <Route path='Dashboard' element={<AdminDashboard setUser={setUser} refresh={refresh} refreshing={refreshing}  user={user} data={data} setData={setData} />} />
+              <Route path='History' element={<AdminHistory refresh={refresh} refreshing={refreshing}  user={user} setUser={setUser} data={history} setData={setHistory}  />} />
+            </Route>
+
+            <Route path='*' element={<NotFound/>} />
+
+          </Route>
+        </Routes>
+      </Router>
+    </>
+  )}
+
+  const ProtectedRoute = ({ children }) => {
+    
+    return token ? children : <Navigate to="/404" />;
+};
+
+
+
+
+
+
+
+
+// //     <div className="mx-auto h-screen w-screen">
+
+// //       {/* <div className="w-screen h-2/4 flex justify-center items-center">
+// //         <div className="button rounded-full px-3 flex justify-center cursor-pointer py-1 bg-slate-800 text-white " onClick={addData}>add</div>
+// //       </div>
+// //       <div className="w-screen h-2/4 flex-col gap-2 flex justify-center items-center">
+// //         <div className="button rounded-full px-3 flex justify-center cursor-pointer py-1 bg-slate-800 text-white " onClick={readData}>get</div>
+// //         {data!=null && data.map(e=>{
+// //           return <p className="text-xl text-black">{e.Nama}</p>
+// //         })}
+// //       </div> */}
+//       <Login/>
+// //       {/* <MainPage user={user} data={data} setData={setData}/> */}
+
+// // {/* 
+// //       <label>NIM</label>
+// //       <input onChange={(e)=>verifInput("NIM",e.target)} type="text" id="helper-text" aria-describedby="helper-text-explanation" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+// //       <label>nama</label>
+// //       <input onChange={(e)=>verifInput("nama",e.target)} type="text" id="helper-text" aria-describedby="helper-text-explanation" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+// //       <label>tglLahir</label>
+// //       <input onChange={(e)=>verifInput("tglLahir",e.target)} type="date" id="start" name="trip-start"  min="2000-01-01" max="2005-12-31" />
+// //       <label>telp</label>
+// //       <input onChange={(e)=>verifInput("telp",e.target)} type="text" id="helper-text" aria-describedby="helper-text-explanation" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+// //       <label>alamat</label>
+// //       <Map verifInput={verifInput}/>
+// //       <label>kesukaan</label>
+// //       <input onChange={(e)=>verifInput("kesukaan",e.target)} type="text" id="helper-text" aria-describedby="helper-text-explanation" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+// //       <div onClick={()=>!Object.values(verif).includes(false)? addDataMhs(user, input):console.log("isi yg bener", input)} className="button p-2 bg-red-500 text-white">add mhs</div>
+// //       <div onClick={()=>readDataMhs(setData)} className="button p-2 bg-red-500 text-white">get mhs</div>
+// //       <div onClick={()=>updateDataMhs(user, "11111111111119", input)} className="button p-2 bg-red-500 text-white">upadte mhs</div>
+// //       <div onClick={()=>deleteDataMhs(user, "22222222222222")} className="button p-2 bg-red-500 text-white">delete mhs</div>
+// //       <div onClick={()=>deleteDataMhs(user, "22222222222222")} className="button p-2 bg-red-500 text-white">add hst</div>
+// //       <div onClick={()=>readDataHistory()} className="button p-2 bg-red-500 text-white">get hst</div>
+// //       {data?.map(e=><p>ee</p>)} */}
+// //     </div>
+//   );
+// }
+

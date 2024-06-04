@@ -111,7 +111,7 @@ export default function Daftar ({refreshing, setToggleAlert, setUser, typeTambah
         navigate('/login')
         addDataMhs(input, input);
       }else{
-        addDataMhs({nama:"admin", NIM:10000000000000}, input);
+        addDataMhs({nama:"admin", NIM:"10000000000000"}, input);
         updatePopup("tambah");
       }
       refreshing()
@@ -172,7 +172,7 @@ export default function Daftar ({refreshing, setToggleAlert, setUser, typeTambah
                       </div>
 
                       <div>
-                          <label for="password" class="block mb-2 text-sm font-medium  text-white  dark:text-white">Password</label>
+                          <label for="password" class="block mb-2 text-sm font-medium  text-white  dark:text-white">Alamat</label>
                           <Map  type={'tambah'} verifInput={verifInput} h={`20rem`} w={"75%"}/>
                       </div>
 

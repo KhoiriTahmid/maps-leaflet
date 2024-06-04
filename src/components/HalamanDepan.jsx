@@ -6,12 +6,13 @@ import { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import MapWithSide from ".././MapWithSide";
 import PopupInfo from './PopupInfo';
+import ".././index.css"
 
 export default function HalamanDepan({refresh, data, setData}) {
   const [help, setHelp] = useState(false)
   
   return (
-    <div className='flex flex-col gap-10 w-screen h-screen pt-14 items-center  bg-gradient-to-r from-[#1A1C4F] to-[#284BC3] '>
+    <div className='flex flex-col gap-10 w-screen h-screen pt-14 items-center  bg-gradient-to-r from-[#1A1C4F] to-[#284BC3] no-scrollbar overflow-hidden'>
       {help && <Bantuan updatePopup={setHelp}/>}
       <Tabel refresh={refresh} data={data} setData={setData}/>
       <div className="cta flex gap-10">

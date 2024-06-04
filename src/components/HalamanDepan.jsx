@@ -85,7 +85,7 @@ return(
             <p className='text-lg font-bold  mb-3'>Masuk Sebagai Admin:</p>
             <div className="flex flex-col text-lg gap-1 "><p>Username : admin123</p><p>Password  : admin123</p></div>
             <p className='text-lg font-bold  mb-3 mt-5'>Masuk Sebagai User:</p>
-            <div className="text-lg flex flex-col gap-1"><p>Username: 112220910000059</p><p>Password: Kho123</p></div>
+            <div className="text-lg flex flex-col gap-1"><p>Username: 11220910000059</p><p>Password: Kho123</p></div>
           </div>):(<p className='text-lg'>{listHelp.filter((e)=>{
             return e.judul==active
           })[0].isi}</p>)}

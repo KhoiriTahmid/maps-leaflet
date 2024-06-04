@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Map from '../Map';
 import { updateDataMhs, addDataMhs } from "../firestoreConnect";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,17 @@ export default function Form({setPopup, user, setUser, type, refreshing,elementL
   useEffect(()=>{
     console.log("user: ",user)
   },[])
+
+  const inputRefs = {
+    userName: useRef(null),
+    pass: useRef(null),
+    NIM:useRef(null),
+    nama:useRef(null),
+    tglLahir:useRef(null),
+    alamat:useRef(null),
+    telp:useRef(null),
+    kesukaan:useRef(null),
+  };
 
   let verif = { NIM: false, nama: false, tglLahir: false, telp: false, alamat: false, kesukaan: false, userName: false, pass:'' };
 
@@ -63,11 +74,11 @@ export default function Form({setPopup, user, setUser, type, refreshing,elementL
     }
 
     if (!cek) {
-      e.style.color = "red";
+      if(type!="alamat")inputRefs[type].current.style.borderColor="red"
       verif[type] = false;
     } else {
       if (type !== "alamat") {
-        e.style.color = "green";
+        inputRefs[type].current.style.borderColor="red"
         setInput(prevInput => ({ ...prevInput, [type]: e.value }));
       } else {
         setAlamat(e);
@@ -86,6 +97,7 @@ export default function Form({setPopup, user, setUser, type, refreshing,elementL
           <input
             readOnly={!editable}
             type={key=='tglLahir'?'date':"text"}
+            ref={inputRefs[key]}
             id={key}
             name={key}
             min={key=="tglLahir"?'2000-01-01':''}

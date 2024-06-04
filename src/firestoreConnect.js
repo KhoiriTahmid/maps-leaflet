@@ -126,8 +126,6 @@ const updateDataMhs = async (user, NIM, updatedData) => {
       console.log("Document updated with ID: ", id);
       try {
         await addDataHistory({NIM:user.NIM, nama:user.nama}, "update data")
-        //console.log("Document written with ID: ", docHst);
-        alert("berhasil update data")
       } catch (e) {
         console.error("Error adding document: ", e);
       }
@@ -144,8 +142,6 @@ const updateDataMhs = async (user, NIM, updatedData) => {
       console.log("Document updated with ID: ", id);
       try {
         await addDataHistory({NIM:user.NIM, nama:user.nama}, "menghapus data")
-        //console.log("Document written with ID: ", docHst);
-        alert("berhasil hapus data")
       } catch (e) {
         console.error("Error adding document: ", e);
       }

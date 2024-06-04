@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { readDataMhs } from "../../firestoreConnect";
 import { useEffect } from 'react';
 import Form from '../Form';
-import { Route } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import MapWithSide from "../../MapWithSide";
+import  PopupInfo from "../PopupInfo";
 
 const data = ({refresh, refreshing ,user, setUser, data, setData}) => {
   const [search, setSearch] = useState('');
@@ -16,7 +17,17 @@ const data = ({refresh, refreshing ,user, setUser, data, setData}) => {
     console.log(filteredData)
   }
 
+  const navigate = useNavigate()
+
+  useEffect(()=>{
+    if(Object.keys(user).length < 5){
+      navigate("/404")
+      return
+    }
+  },[])
+
   useEffect(() => {
+    
     const fetchData = async () => {
       await readDataMhs(setData);
     };
@@ -32,9 +43,9 @@ const data = ({refresh, refreshing ,user, setUser, data, setData}) => {
   }, [data]);
 
   return (
-    <>
-    <section className="section p-10 pt-10 bg-slate-950 min-h-screen">
-      <h2 className="text-4xl font-bold text-yellow-500 text-center mb-4">Data Kelas</h2>
+    <div className='bg-slate-950  w-screen h-screen flex  justify-center'>
+    <section className="section p-10 pt-14 w-[80%]">
+      <h2 className=" text-5xl font-bold text-yellow-500 text-center mb-14">Data Kelas</h2>
       <div className="w-full h-1 bg-yellow-500 mb-5"></div>
       <div className="mb-4">
         <input 
@@ -48,8 +59,8 @@ const data = ({refresh, refreshing ,user, setUser, data, setData}) => {
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-gray-900 text-white">
-          <thead>
-            <tr className='text-yellow-500 border-b-2 border-b-yellow-500'>
+          <thead className='block'>
+            <tr style={{ display: 'table', width: '100%', tableLayout: 'fixed' }} className='text-yellow-500 border-b-2 border-b-yellow-500'>
               <th className="py-2 px-4 text-left bg-gray-700">Name</th>
               <th className="py-2 px-4 text-left bg-gray-700">NIM</th>
               <th className="py-2 px-4 text-left bg-gray-700">Tanggal Lahir</th>
@@ -58,15 +69,15 @@ const data = ({refresh, refreshing ,user, setUser, data, setData}) => {
               <th className="py-2 px-4 text-left bg-gray-700">Favorite</th>
             </tr>
           </thead>
-          <tbody className='overflow-scroll '>
+          <tbody className="custom-inset-shadow overflow-y-auto no-scrollbar w-[100%] " style={{ maxHeight: '30rem', display: 'block' }}>
             {filteredData.map((el, index) => (
-              <tr key={index} onClick={()=>{setRoute(!route); setClicked(el)}} className={index % 2 === 0 ? 'bg-gray-800' : 'bg-gray-700'}>
-                <td className="py-2 px-4">{el.nama}</td>
+              <tr key={index} style={{ display: 'table', width: '100%', tableLayout: 'fixed' }} onClick={()=>{setRoute(!route); setClicked(el)}} className={` cursor-pointer hover:bg-gray-400 hover:text-black ${index % 2 === 0 ? 'bg-gray-800' : 'bg-gray-700'}`}>
+                <td className="py-2 px-4">{el.nama.slice(0,20)}{el.kesukaan.length>20?'...':''}</td>
                 <td className="py-2 px-4">{el.NIM}</td>
                 <td className="py-2 px-4">{el.tglLahir}</td>
                 <td className="py-2 px-4">{el.alamat.nama.slice(0,30)}...</td>
                 <td className="py-2 px-4">{el.telp}</td>
-                <td className="py-2 px-4">{el.kesukaan}</td>
+                <td className="py-2 px-4">{el.kesukaan.slice(0,20)}{el.kesukaan.length>20?'...':''}</td>
               </tr>
             ))}
           </tbody>
@@ -76,8 +87,9 @@ const data = ({refresh, refreshing ,user, setUser, data, setData}) => {
         <Form refreshing={refreshing} user={user} setUser={setUser} type={'tambah'}/>
       </div>)}
     </section>
-    {route && (<div className=' flex justify-center items-center w-screen bg-red-900 h-screen fixed top-0 left-0 z-50'><MapWithSide  type={"showOnDash"}  h={`30rem`} w={"75%"} user={clicked}/></div>)}
-  </>
+      {route && (<div className=' flex justify-center items-center w-screen h-screen fixed top-0 left-0 z-50'><PopupInfo dataClicked={clicked} updatePopup={setRoute}/></div>)}
+
+  </div>
   );
 };
 

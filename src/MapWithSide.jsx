@@ -3,9 +3,9 @@ import "leaflet/dist/leaflet.css";
 
 import Routing from "./Routing";
 import FindLocation from "./FindLocation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-export default function MapWithSide({ loc = null, verifInput = null, h, w, type, user }) {
+export default function MapWithSide({setRoutePopup=null, loc = null, verifInput = null, h, w, type, user }) {
   const [position, setPosition] = useState([-6.3059358475001135, 106.75275203904764]);
   const [destination, setDestination] = useState(user?.alamat?.koor);
   const [infoMap, setInfoMap] = useState(null);
@@ -14,20 +14,35 @@ export default function MapWithSide({ loc = null, verifInput = null, h, w, type,
   };
 
   return (
-    <div className={`mx-auto ${type != 'tambah' ? (type!="updateAdmin" ? 'basis-2/3 ' : '') : ''}   h-[${h}] overflow-hidden no-scrollbar`}>
-      <div className={`flex ${type=="showOnDash"? " w-11/12":"w-screen"} `}>
-        <MapContainer style={{ height: h, width: "100%" }} className=" basis-3/5" center={[position[0], position[1] + 0.05]} zoom={13} onClick={handleMapClick}>
-          <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <Routing setInfoMap={setInfoMap} position={[position, destination]} setDestination={setDestination} destination={destination}/>
-          <Marker position={position} />
-          {destination && <Marker position={destination} />}
-        </MapContainer>
-        <SideInfo infoMap={infoMap} user={user} />
+    setRoutePopup?(<Component updatePopup={setRoutePopup}>
+      <div className={`mx-auto ${type != 'tambah' ? (type!="updateAdmin" ? 'basis-2/3 ' : '') : ''}   h-[${h}] overflow-hidden no-scrollbar`}>
+        <div className={`flex ${type=="showOnDash"? " w-screen":"w-[90%]"} `}>
+          <MapContainer style={{ height: h, width: "100%" }} className=" basis-3/5" center={[position[0], position[1] + 0.05]} zoom={13} onClick={handleMapClick}>
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Routing setInfoMap={setInfoMap} position={[position, destination]} setDestination={setDestination} destination={destination}/>
+            <Marker position={position} />
+            {destination && <Marker position={destination} />}
+          </MapContainer>
+          <SideInfo infoMap={infoMap} user={user} />
+        </div>
       </div>
-    </div>
+    </Component>):(<div className={`mx-auto ${type != 'tambah' ? (type!="updateAdmin" ? 'basis-2/3 ' : '') : ''}   h-[${h}] overflow-hidden no-scrollbar`}>
+        <div className={`flex ${type=="showOnDash"? " w-11/12":"w-screen"} `}>
+          <MapContainer style={{ height: h, width: "100%" }} className=" basis-3/5" center={[position[0], position[1] + 0.05]} zoom={13} onClick={handleMapClick}>
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Routing setInfoMap={setInfoMap} position={[position, destination]} setDestination={setDestination} destination={destination}/>
+            <Marker position={position} />
+            {destination && <Marker position={destination} />}
+          </MapContainer>
+          <SideInfo infoMap={infoMap} user={user} />
+        </div>
+      </div>)
   );
 }
 
@@ -55,12 +70,39 @@ const SideInfo = ({ infoMap, user }) => {
             </div>
           </div>
         ) : (
-          <div className="pl-3 gap-2 flex-col h-[94vh] w-[35%] text-slate-100 bg-slate-800 z-10 flex items-center justify-center text-center">
-            Masukan alamat anda
+          <div className="pl-3 gap-2 h-[30rem] w-[35%] text-slate-100 bg-slate-800 z-10 text-3xl flex  justify-center items-center">
+            Memuat rute...
           </div>
         )}
       </>
     );
   };
   
+
+  const Component = ({children, type, updatePopup}) => {
+    const ref = useRef(null);
+  
+    useEffect(() => {
+      const handleOutSideClick = (event) => {
+        if (!ref.current?.contains(event.target)) {
+          updatePopup()
+        }
+      };
+  
+      window.addEventListener("mousedown", handleOutSideClick);
+  
+      return () => {
+        window.removeEventListener("mousedown", handleOutSideClick);
+      };
+    }, [ref]);
+  
+  
+    return (
+      <div className={`w-screen backdrop-blur-sm bg-white/30 cursor-pointer h-screen fixed top-0 left-0 flex  ${type=="pojok"? "justify-end items-end p-10":"justify-center items-center"}`}>
+        <div className="font-semibold text-xl p-24 " ref={ref}>
+          {children}
+        </div>
+      </div>
+    );
+  };
   

@@ -1,28 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../App.css';
 import { addDataMhs, updateDataMhs, findDataByUnameOrNIM, readDataMhs } from "../firestoreConnect";
 import { useNavigate } from "react-router-dom";
 import Map from ".././Map";
+import MapWithSide from ".././MapWithSide";
 import { update } from 'firebase/database';
 
-export default function Update ({refreshing, dataClicked, typeTambah, updatePopup, data}) {
+export default function Update ({refreshing, setToggleAlert, dataClicked, typeTambah, updatePopup, data, isPopup=null}) {
   const [showPassword, setShowPassword] = useState(false);
-  // let input = { NIM: {value: "",pass: false}, nama: {value: "",pass: false}}
   const [inputUname, setInputUname] = useState('')
   const [inputPass, setInputPass] = useState('')
+  const [routePopup, setRoutePopup] = useState(false)
 
   const navigate = useNavigate();
 
    const [input, setInput] = useState(dataClicked)
-//     NIM: '',
-//     nama: '',
-//     tglLahir: '',
-//     telp: '',
-//     alamat: '',
-//     kesukaan: '',
-//     userName:'',
-//     pass:''
-//   });
+
+   const inputRefs = {
+    userName: useRef(null),
+    pass: useRef(null),
+    NIM:useRef(null),
+    nama:useRef(null),
+    tglLahir:useRef(null),
+    alamat:useRef(null),
+    telp:useRef(null),
+    kesukaan:useRef(null),
+  };
+
+
   const [okeToSave, setOkeToSave] = useState(false);
 
 
@@ -60,11 +65,11 @@ export default function Update ({refreshing, dataClicked, typeTambah, updatePopu
     }
 
     if (!cek) {
-      e.style.color = "red";
+      if(type!="alamat")inputRefs[type].current.style.borderColor="red"
       verif[type] = false;
     } else {
       if (type !== "alamat") {
-        e.style.color = "green";
+        inputRefs[type].current.style.borderColor="green"
         setInput(prevInput => ({ ...prevInput, [type]: e.value }));
       } else {
         setInput(prevInput => ({ ...prevInput, [type]: e }));
@@ -77,43 +82,63 @@ export default function Update ({refreshing, dataClicked, typeTambah, updatePopu
     if(!Object.values(input).includes("")) {
         const dataFilter = data.filter(e=>e.NIM==input.NIM || e.userName==input.userName);
         if(dataFilter.length>1 || (dataFilter != dataClicked && dataFilter>0)){
-            alert("username atau nim telah digunakan")
+            setToggleAlert("username atau nim telah digunakan")
             return;
         }else{
-            await updateDataMhs({nama:"admin", NIM:10000000000000}, dataClicked.NIM, input);
+            await updateDataMhs({nama:"admin", NIM:"00000000000000"}, dataClicked.NIM, input);
             updatePopup("update")
-            console.log("data update")
+            setToggleAlert("data berhasil diupdate")
         }
         refreshing()
     }else{
-      alert("lengkapi data terlebih dulu")
+      setToggleAlert("lengkapi data terlebih dulu")
     }
   }
+
+  const ref = useRef(null);
+
+   useEffect(() => {
+     const handleOutSideClick = (event) => {
+       if (!ref.current?.contains(event.target)) {
+         console.log("yok")
+         updatePopup("update")
+       }
+     };
+ 
+     window.addEventListener("mousedown", handleOutSideClick);
+ 
+     return () => {
+       window.removeEventListener("mousedown", handleOutSideClick);
+     };
+   }, [ref]);
 
   
 
   return (
-    <section class={`w-screen h-screen my-auto flex justify-center items-center bg-white ${typeTambah!="tambahUser"? "bg-opacity-50 backdrop-blur-lg":""} dark:bg-gray-900`}>
-      <div class={`flex  gap-6 items-center ${typeTambah!="tambahUser"?"shadow bg-white w-fit rounded-2xl":""} justify-center px-6 py-8 mx-auto lg:py-0`}>
-        <div onClick={()=>updatePopup("update")} className="fixed top-24 right-[417px] z-50 font-bold cursor-pointer">x</div>
-        <div class={`w-full bg-red rounded-lg ${typeTambah=="tambahUser"?"shadow":""} dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700`}>
+    <section class={` cursor-pointer w-screen h-screen my-auto flex justify-center items-center bg-white ${typeTambah!="tambahUser"? "bg-opacity-50 backdrop-blur-lg":""} dark:bg-gray-900`}>
+      <div ref={ref} class={`flex  gap-6 items-center ${typeTambah!="tambahUser"?"shadow  w-fit rounded-2xl":""} justify-center mx-auto lg:py-0`}>
+          {routePopup && (<div className='z-[99999] flex justify-center items-center w-screen h-screen fixed top-0 left-0'><MapWithSide setRoutePopup={setRoutePopup}  type={"showOnDash"}  h={`30rem`} w={"75%"} user={input}/></div>)}
+
+        <div class={`w-full bg-red rounded-lg ${typeTambah=="tambahUser"?"shadow":""} dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700`}>
               <div class="p-6 space-y-4 md:space-y-6 sm:p-8 ">
-                  <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl dark:text-white mb-20">
+                  <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl dark:text-white mb-10 mt-10">
                       Update data
                   </h1>
-                  <form class="space-y-4 md:space-y-6" action="#">
+                  <form class="space-y-4 py-5" action="#">
                   {Object.keys(input).map(key => (key !== "alamat" && key !== "userName" && key !== "pass") && (
                         <div className="mb-4" key={key}>
                         <label htmlFor={key} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{key.charAt(0).toUpperCase() + key.slice(1)}:</label>
                         <input
                             type={key=='tglLahir'?'date':key=='pass'?"password":"text"}
+                            ref={inputRefs[key]}
                             id={key}
                             name={key}
+                            contentEditable={!isPopup}
                             defaultValue={dataClicked[key]}
                             min={key=="tglLahir"?'2000-01-01':''}
                             max={key=="tglLahir"?'2007-01-01':''}
                             onChange={(e) => verifInput(key, e.target)}
-                            className="w-[20rem] bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            className="w-[25rem] bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         />
                         </div>
                     ))}
@@ -121,20 +146,19 @@ export default function Update ({refreshing, dataClicked, typeTambah, updatePopu
                   </form>
               </div>
           </div>
-          <div class={`w-full bg-red rounded-lg ${typeTambah=="tambahUser"?"shadow":""} dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700`}>
-              <div class="p-6 space-y-4 md:space-y-6 sm:p-8 ">
+          <div class={`w-full bg-red rounded-lg ${typeTambah=="tambahUser"?"shadow":""} dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700`}>
+              <div class="px-7 space-y-4  py-[2.10rem] ">
                   <form class="space-y-4 md:space-y-6 " action="#">
                       <div>
                           <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">username</label>
-                          <input defaultValue={dataClicked.userName} onChange={(e)=> verifInput("userName", e.target)} type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required=""/>
+                          <input ref={inputRefs.userName} defaultValue={dataClicked.userName} onChange={(e)=> verifInput("userName", e.target)} type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required=""/>
                       </div>
                       <div>
                           <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                          <input defaultValue={dataClicked.pass} onChange={(e)=> verifInput("pass", e.target)} type="text" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
+                          <input ref={inputRefs.pass} defaultValue={dataClicked.pass} onChange={(e)=> verifInput("pass", e.target)} type="text" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
                       </div>
 
-                      <Map  type={'tambah'} verifInput={verifInput} h={`20rem`} w={"75%"}/>
-                      
+                      <Map setRoutePopup={setRoutePopup} data={dataClicked} type={'tambah'} verifInput={verifInput} h={`20rem`} w={"75%"}/>                     
                       <div onClick={()=>handleSave()} class=" ring-2 ring-gray-200 cursor-pointer hover:ring-gray-600 text-gray-900 w-full  bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">update data</div>
                       
                   </form>

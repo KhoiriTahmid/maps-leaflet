@@ -23,9 +23,10 @@ export default function MainPage({user, type, data, setData}) {
   return (
     <div className=''>
         {/* {page=="classdata"? <UserDashboard data={data} setData={setData} />:<Profile user={user} classData={data}/>} */}
-        <Outlet data={data} user={user} setData={setData}/>
+        <div className="w-fit h-screen fixed top-0 z-[9999]"><Sidebar type={type} toggle={toggle} setPage={setPage} setToggle={setToggle}/></div>
         <div className="fixed top-0 left-0 cursor-pointer m-10" onClick={()=>setToggle(!toggle)}><Burger/></div>
-        <div className="w-fit h-screen fixed top-0 z-50"><Sidebar type={type} toggle={toggle} setPage={setPage} setToggle={setToggle}/></div>
+        {toggle && <div className="fixed z-[9998] h-screen w-screen backdrop-blur-md bg-white/10"></div>}
+        <Outlet  data={data} user={user} setData={setData}/>
     </div>
   )
 }

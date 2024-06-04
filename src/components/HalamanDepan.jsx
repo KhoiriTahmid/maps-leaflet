@@ -1,23 +1,96 @@
 
 import { NavLink } from 'react-router-dom'
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { readDataMhs } from ".././firestoreConnect";
 import { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import MapWithSide from ".././MapWithSide";
+import PopupInfo from './PopupInfo';
 
 export default function HalamanDepan({refresh, data, setData}) {
+  const [help, setHelp] = useState(false)
   
   return (
-    <div className='flex flex-col gap-10 w-screen h-screen justify-center items-center'>
+    <div className='flex flex-col gap-10 w-screen h-screen pt-14 items-center '>
+      {help && <Bantuan updatePopup={setHelp}/>}
       <Tabel refresh={refresh} data={data} setData={setData}/>
       <div className="cta flex gap-10">
-        <NavLink to={'/login'} className="login flex justify-center items-center rounded-xl ring-1 ring-black cursor-pointer py-1 px-2 hover:ring-slate-700">Login</NavLink>
-        <NavLink to={'/daftar'} className="login flex justify-center items-center rounded-xl ring-1 ring-black cursor-pointer py-1 px-2 hover:ring-slate-700">Daftar</NavLink>
+        <NavLink to={'/login'} className="login flex justify-center items-center rounded-xl ring-1 ring-black cursor-pointer py-1.5 px-3 hover:bg-gray-700 hover:text-gray-100 hover:ring-slate-700">Login</NavLink>
+        <NavLink to={'/daftar'} className="login flex justify-center items-center rounded-xl ring-1 ring-black cursor-pointer py-1.5 px-3 hover:bg-gray-700 hover:text-gray-100 hover:ring-slate-700">Daftar</NavLink>
+      </div>
+      <div onClick={()=>setHelp(true)} className="  cursor-pointer fixed right-10 bottom-10 p-3 bg-slate-700">bantuan?</div>
+    </div>
+  )
+}
+
+
+function Bantuan({updatePopup}) {
+  const ref = useRef(null);
+
+  
+  useEffect(() => {
+    const handleOutSideClick = (event) => {
+      if (!ref.current?.contains(event.target)) {
+        updatePopup()
+      }
+    };
+    
+    window.addEventListener("mousedown", handleOutSideClick);
+    
+    return () => {
+      window.removeEventListener("mousedown", handleOutSideClick);
+    };
+  }, [ref]);
+  
+  const listHelp =[
+    {judul:"Bagaimana cara masuk sebagai admin dan mahasiswa?",
+    isi:`Masuk Sebagai Admin 
+    Username: admin123 
+    Password: admin123 
+
+    Masuk Sebagai Mahasiswa 
+    Username: nim (Contoh '11220910000059') 
+    Password: 'Koko22'`
+  },
+  {judul:"Bagaimana jika lupa password?",
+      isi:"Pada halaman login, terdapat pilihan lupa password. Jika diklik maka akan menampilkan form untuk username atau NIM. Jika anda bisa mengisinya dengan data yang benar maka, password akan ditampilkan di layar"
+    },
+    {judul:"Bagaimana cara mendaftar?",
+    isi:"Anda dapat mendaftar dengan mengunjungi halaman pendaftaran dan mengisi form yang disediakan secara valid, petunjuk pengisian dapat dilihan pada masing-masing form."
+  },
+  {judul:"Bagaimana cara menambah data mahasiswa?",
+  isi:"Kewenangan menambah data mahasiswa hanya dapat dilakukan oleh admin pada halaman dashboard, sedangkan untuk mahasiswa hanya bisa mendaftarkan akunnya."
+},
+{judul:"Bagaimana cara mengisi form alamat?",
+isi:"Di halaman daftar, edit, dan tambah data terdapat form alamat berupa peta lokasi, anda bisa mengklik lokasi alamat dengan mengklik lokasi pada peta. Koordinat latitude dan longitude akan diisi secara otomatis."
+},
+{judul:"Apa yang harus dilakukan jika data mahasiswa tidak ditemukan?",
+isi:"Jika data mahasiswa tidak ditemukan, pastikan Anda telah memasukkan kata kunci pencarian yang benar. Jika masih tidak ditemukan, mungkin data tersebut belum diinput ke dalam sistem. Hubungi administrator untuk informasi lebih lanjut."
+},
+]
+const [active, setActive]=useState(listHelp[0].judul)
+return(
+    <div className={`w-screen z-[99999] cursor-pointer backdrop-blur-sm bg-white/30 h-screen fixed top-0 left-0 flex  justify-center items-center`}>
+      <div className="font-semibold h-[60%] w-[50%] flex text-xl bg-gray-800 rounded-lg overflow-clip" ref={ref}>
+        <div className="side flex flex-col justify-evenly  bg-slate-500 basis-2/5">
+          {listHelp.map((e,i)=>(<div key={i} onClick={()=>setActive(e.judul)} className={` ${e.judul==active?"bg-opacity-70":""} flex flex-wrap border-b-2 border-black/10 text-lg px-5 py-2 `}>{e.judul}</div>))}
+        </div>
+        <div className="isi flex flex-col justify-center gap-10 pl-14 px-20 bg-slate-200 basis-3/5">
+          <p className=' text-2xl'>{active}</p>
+          {active==listHelp[0].judul?(<div>
+            <p className='text-lg font-bold  mb-3'>Masuk Sebagai Admin:</p>
+            <div className="flex flex-col text-lg gap-1 "><p>Username : admin123</p><p>Password  : admin123</p></div>
+            <p className='text-lg font-bold  mb-3 mt-5'>Masuk Sebagai User:</p>
+            <div className="text-lg flex flex-col gap-1"><p>Username: 112220910000059</p><p>Password: Kho123</p></div>
+          </div>):(<p className='text-lg'>{listHelp.filter((e)=>{
+            return e.judul==active
+          })[0].isi}</p>)}
+        </div>
       </div>
     </div>
   )
 }
+
 
 
 
@@ -49,7 +122,7 @@ const Tabel = ({refresh, data, setData}) => {
 
   return (
     <>
-    <section className="section p-10 pt-10 h-fit ">
+    <section className="section p-10 pt-0 h-fit w-[70%]">
       <h2 className="text-4xl font-bold text-black text-center mb-4">Data Kelas</h2>
       <div className="w-full h-1 bg-black mb-5"></div>
       <div className="mb-4">
@@ -64,8 +137,8 @@ const Tabel = ({refresh, data, setData}) => {
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-gray-900 text-white">
-          <thead>
-            <tr className='text-black border-b-2 border-b-gray-600'>
+          <thead className='block'>
+            <tr style={{ display: 'table',  tableLayout: 'fixed' }} className='w-full text-black border-b-2 border-b-gray-600'>
               <th className="py-2 px-4 text-left   bg-gray-100">Name</th>
               <th className="py-2 px-4 text-left bg-gray-100">NIM</th>
               <th className="py-2 px-4 text-left  bg-gray-100">Tanggal Lahir</th>
@@ -74,22 +147,22 @@ const Tabel = ({refresh, data, setData}) => {
               <th className="py-2 px-4 text-left  bg-gray-100">Favorite</th>
             </tr>
           </thead>
-          <tbody className='overflow-scroll '>
+          <tbody className="custom-inset-shadow overflow-y-auto no-scrollbar w-[100%] " style={{ maxHeight: '25rem', display: 'block' }}>
             {filteredData.map((el, index) => (
-              <tr key={index} onClick={()=>{setRoute(!route); setClicked(el)}} className={index % 2 === 0 ? 'bg-gray-100 text-black' : 'bg-gray-300 text-black'}>
-                <td className="py-2 px-4">{el.nama}</td>
+              <tr key={index} style={{ display: 'table', tableLayout: 'fixed' }} onClick={()=>{setRoute(!route); setClicked(el)}} className={`w-full cursor-pointer hover:bg-gray-700 hover:text-gray-100 ${index % 2 === 0 ? 'bg-gray-100  text-black' : 'bg-gray-300  text-black'}`}>
+                <td className="py-2 px-4">{el.nama.slice(0,20)}{el.kesukaan.length>20?'...':''}</td>
                 <td className="py-2 px-4">{el.NIM}</td>
                 <td className="py-2 px-4">{el.tglLahir}</td>
                 <td className="py-2 px-4">{el.alamat.nama.slice(0,30)}...</td>
                 <td className="py-2 px-4">{el.telp}</td>
-                <td className="py-2 px-4">{el.kesukaan}</td>
+                <td className="py-2 px-4">{el.kesukaan.slice(0,15)}{el.kesukaan.length>15?'...':''}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
     </section>
-    {route && (<div className=' flex justify-center items-center w-screen h-screen fixed top-0 left-0 z-50'><MapWithSide  type={"showOnDash"}  h={`30rem`} w={"75%"} user={clicked}/></div>)}
+    {route && (<div className=' flex justify-center items-center w-screen h-screen fixed top-0 left-0 z-50'><PopupInfo dataClicked={clicked} updatePopup={setRoute}/></div>)}
   </>
   );
 };

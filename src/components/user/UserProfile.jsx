@@ -2,7 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Form from '../Form';
 import { useNavigate } from "react-router-dom";
 const Profile = ({refreshing, setClassData, classData,setUser, user }) => {
+  const navigate = useNavigate()
 
+  useEffect(()=>{
+    if(Object.keys(user).length < 5){
+      navigate("/404")
+      return
+    }
+  },[])
 
   return (
     <section className="section p-10 h-min-screen bg-gray-900 ">

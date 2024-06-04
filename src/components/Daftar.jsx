@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../App.css';
 import { addDataMhs, findDataByUnameOrNIM } from "../firestoreConnect";
-import { useNavigate } from "react-router-dom";
+import { useNavigate  } from "react-router-dom";
 import Map from ".././Map";
 import { NavLink } from 'react-router-dom';
+import UniversalPopup from "./UniversalPopup";
 
-export default function Daftar ({refreshing, setUser, typeTambah, updatePopup}) {
-  const [showPassword, setShowPassword] = useState(false);
-  // let input = { NIM: {value: "",pass: false}, nama: {value: "",pass: false}}
-  const [inputUname, setInputUname] = useState('')
-  const [inputPass, setInputPass] = useState('')
-
+export default function Daftar ({refreshing, setToggleAlert, setUser, typeTambah, updatePopup}) {
   const navigate = useNavigate();
 
   const [input, setInput] = useState({
@@ -23,7 +19,19 @@ export default function Daftar ({refreshing, setUser, typeTambah, updatePopup}) 
     userName:'',
     pass:''
   });
-  const [okeToSave, setOkeToSave] = useState(false);
+  const syarat = {NIM: '14 Digit angka',nama: 'hanya huruf dan spasi', tanggalLahir: '',telp: '11-12 digit angka',alamat: '', kesukaan: 'harus didahului huruf', username:'6-15 angka dan huruf, dan didahuluai huruf',password:'minimal 6 digit yang memuat huruf kapital, kecil dan angka '};
+  const [toggleAlerto, seToggleAlerto] = useState("");
+
+  const inputRefs = {
+    userName: useRef(null),
+    pass: useRef(null),
+    NIM:useRef(null),
+    nama:useRef(null),
+    tglLahir:useRef(null),
+    alamat:useRef(null),
+    telp:useRef(null),
+    kesukaan:useRef(null),
+  };
 
 
   let verif = {userName:false, pass:false, NIM: false, nama: false, tglLahir: false, telp: false, alamat: false, kesukaan: false };
@@ -32,7 +40,7 @@ export default function Daftar ({refreshing, setUser, typeTambah, updatePopup}) 
     let cek = false;
     switch (type) {
       case 'userName':
-        cek = (!(/^[a-zA-Z][a-zA-Z0-9._]{2,14}$/.test(e.value))) ? false : true;
+        cek = (!(/^[a-zA-Z][a-zA-Z0-9._]{5,14}$/.test(e.value))) ? false : true;
         break;
       case 'pass':
         cek = (!( /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(e.value))) ? false : true;
@@ -60,11 +68,11 @@ export default function Daftar ({refreshing, setUser, typeTambah, updatePopup}) 
     }
 
     if (!cek) {
-      e.style.color = "red";
       verif[type] = false;
+      if(type!="alamat")inputRefs[type].current.style.borderColor="red"
     } else {
       if (type !== "alamat") {
-        e.style.color = "green";
+        if(type!="alamat")inputRefs[type].current.style.borderColor="green"
         setInput(prevInput => ({ ...prevInput, [type]: e.value }));
       } else {
         setInput(prevInput => ({ ...prevInput, [type]: e }));
@@ -74,12 +82,29 @@ export default function Daftar ({refreshing, setUser, typeTambah, updatePopup}) 
     console.log(input);
   }
 
+  const ref = useRef(null);
+
+   useEffect(() => {
+     const handleOutSideClick = (event) => {
+       if (!ref.current?.contains(event.target)) {
+         console.log("yok")
+         updatePopup(false)
+       }
+     };
+ 
+     window.addEventListener("mousedown", handleOutSideClick);
+ 
+     return () => {
+       window.removeEventListener("mousedown", handleOutSideClick);
+     };
+   }, [ref]);
+
   async function handleSave() {// form update harus diisi
     if(!Object.values(input).includes("")) {
         const udahAda = [await findDataByUnameOrNIM(input.NIM), await findDataByUnameOrNIM(input.userName)]
         console.log("ini input : ", input)
         if(udahAda[0] || udahAda[1]){
-            alert("username atau nim telah digunakan")
+            setToggleAlert? setToggleAlert("username atau nim telah digunakan"): seToggleAlerto("username atau nim telah digunakan")
             return;
         }
       if (typeTambah=="tambahUser") {
@@ -90,53 +115,68 @@ export default function Daftar ({refreshing, setUser, typeTambah, updatePopup}) 
         updatePopup("tambah");
       }
       refreshing()
+      setToggleAlert? setToggleAlert("berhasil menambahkan data!"): seToggleAlerto("berhasil menambahkan akun!")
     }else{
-      alert("lengkapi data terlebih dulu")
+      setToggleAlert? setToggleAlert("lengkapi data terlebih dulu"):seToggleAlerto("lengkapi data terlebih dulu")
     }
   }
 
   
 
   return (
-    <section class={`w-screen h-screen my-auto flex justify-center items-center bg-white ${typeTambah!="tambahUser"? "bg-opacity-50 backdrop-blur-lg":""} dark:bg-gray-900`}>
-      <div class={`flex  gap-6 items-center ${typeTambah!="tambahUser"?"shadow bg-white w-fit rounded-2xl":""} justify-center px-6 py-8 mx-auto lg:py-0`}>
-        <div class={`w-full bg-red rounded-lg ${typeTambah=="tambahUser"?"shadow":""} dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700`}>
+    <section class={` cursor-pointer w-screen h-screen my-auto flex justify-center items-center bg-white ${typeTambah!="tambahUser"? "bg-opacity-50 backdrop-blur-lg":""} dark:bg-gray-900`}>
+      <div ref={ref} class={`flex  gap-6 items-center ${typeTambah!="tambahUser"?"shadow w-fit rounded-2xl":""} justify-center mx-auto`}>
+      {toggleAlerto!="" && (
+              <UniversalPopup value={toggleAlerto} type={toggleAlerto=="berhasil login"? "pojok":"center"} updatePopup={seToggleAlerto}/>
+          )}
+        <div class={`w-full bg-red rounded-lg ${typeTambah=="tambahUser"?"shadow":""} dark:border md:mt-0 xl:p-0 h-full dark:bg-gray-800 dark:border-gray-700`}>
               <div class="p-6 space-y-4 md:space-y-6 sm:p-8 ">
-                  <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl dark:text-white mb-20">
-                      {typeTambah=="tambahUser" ? "Sign up your account":"Tambah data"}
+                  <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl dark:text-white mt-10 mb-20">
+                      {typeTambah=="tambahUser" ? "Daftarkan akunmu":"Tambah data"}
                   </h1>
-                  <form class="space-y-4 md:space-y-6" action="#">
-                  {Object.keys(input).map(key => (key !== "alamat" && key !== "userName" && key !== "pass") && (
+                  <form class="space-y-4 md:space-y-6 pb-1" action="#">
+                  {Object.keys(input).map((key,index) => {
+                    const syaratCuy = Object.keys(syarat)
+                    console.log(syaratCuy)
+                    
+                    return (key !== "alamat" && key !== "userName" && key !== "pass") && (
                         <div className="mb-4" key={key}>
-                        <label htmlFor={key} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{key.charAt(0).toUpperCase() + key.slice(1)}:</label>
+                        <label htmlFor={key} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{syaratCuy[index]}</label>
                         <input
+                            ref={inputRefs[key]}
                             type={key=='tglLahir'?'date':key=='pass'?"password":"text"}
                             id={key}
+                            placeholder={syarat[syaratCuy[index]]}
                             name={key}
                             min={key=="tglLahir"?'2000-01-01':''}
                             max={key=="tglLahir"?'2007-01-01':''}
                             onChange={(e) => verifInput(key, e.target)}
-                            className="w-[20rem] bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            className={` w-[25rem] bg-gray-50 border  text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-700  dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                         />
                         </div>
-                    ))}
+                    )})}
                       
                   </form>
               </div>
           </div>
-          <div class={`w-full bg-red rounded-lg ${typeTambah=="tambahUser"?"shadow":""} dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700`}>
-              <div class="p-6 space-y-4 md:space-y-6 sm:p-8 ">
+          <div class={`w-full bg-red rounded-lg ${typeTambah=="tambahUser"?"shadow":""} dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700`}>
+              <div class="p-6 my-1.5 sm:p-8 ">
                   <form class="space-y-4 md:space-y-6 " action="#">
                       <div>
                           <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">username</label>
-                          <input onChange={(e)=> verifInput("userName", e.target)} type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required=""/>
+                          <input ref={inputRefs.userName} placeholder={syarat.username} onChange={(e)=> verifInput("userName", e.target)} type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required=""/>
                       </div>
                       <div>
                           <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                          <input onChange={(e)=> verifInput("pass", e.target)} type="text" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
+                          <input ref={inputRefs.pass} placeholder={syarat.password} onChange={(e)=> verifInput("pass", e.target)} type="text" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
                       </div>
 
-                      <Map  type={'tambah'} verifInput={verifInput} h={`20rem`} w={"75%"}/>
+                      <div>
+                          <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                          <Map  type={'tambah'} verifInput={verifInput} h={`20rem`} w={"75%"}/>
+                      </div>
+
+                      
                       
                       <div onClick={()=>handleSave()} class=" ring-2 ring-gray-200 cursor-pointer hover:ring-gray-600 text-gray-900 w-full  bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">{typeTambah=="tambahUser"? "Sign Up": "tambah data"}</div>
                       {typeTambah=="tambahUser" && (<p class="text-sm font-light text-gray-500 dark:text-gray-400">

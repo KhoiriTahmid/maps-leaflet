@@ -33,9 +33,6 @@ export default function App() {
     setRefresh(!refresh)
   }
 
-  useEffect(()=>{
-    console.log(user)
-  },[])
   
   
 // buat kalo ngetik path dalem, gak bisa kebuka

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../App.css';
+import UniversalPopup from './UniversalPopup';
 import { addDataHistory, findDataByParam, findDataByUnameOrNIM } from "../firestoreConnect";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from 'react-router-dom';
@@ -10,6 +11,7 @@ const LoginPage = ({setUser}) => {
   const [inputUname, setInputUname] = useState('')
   const [inputPass, setInputPass] = useState('')
   const [toggleForgot, setToggleForgot] = useState(false)
+  const [toggleAlert, setToggleAlert] = useState('') // '', 'pass'
 
   const navigate = useNavigate();
 
@@ -21,6 +23,7 @@ const LoginPage = ({setUser}) => {
       localStorage.setItem('authToken', JSON.stringify({nama:'admin', NIM:"000000000000000"}));//
       setUser({nama:'admin', NIM:"000000000000000"})
       addDataHistory({nama:'admin', NIM:"000000000000000"}, "Login")
+      setToggleAlert("berhasil login")
       return;
     }
     
@@ -31,13 +34,10 @@ const LoginPage = ({setUser}) => {
       localStorage.setItem('authToken', JSON.stringify(data));//
       setUser(data)
       addDataHistory(data, "Login")
+      setToggleAlert("berhasil login")
       return;
     }
-    if(data && type=="lupaPass"){
-      alert("paaword anda: ",data.pass)
-      return;
-    }
-   alert("masukan salah!")
+  setToggleAlert("akun tidak ditemukan!") //bisa dirinci
 
   }
 
@@ -47,8 +47,13 @@ const LoginPage = ({setUser}) => {
 
   async function handleGetPass() {
     const data = await findDataByUnameOrNIM(inputUname);
-    alert("password : ",data.pass)
-    setToggleForgot(false)
+    if(data){
+      setToggleAlert(`password : ${data.pass}`)
+      console.log(data.pass)
+      setToggleForgot(false)
+    }else{
+      setToggleAlert("akun tidak ditemukan!") //bisa dirinci
+    }
   }
 
   
@@ -56,6 +61,9 @@ const LoginPage = ({setUser}) => {
   return (
     <section class="bg-gray-50 dark:bg-gray-900 dark:text-white">
       <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+          {toggleAlert!="" && (
+              <UniversalPopup value={toggleAlert} type={toggleAlert=="berhasil login"? "pojok":"center"} updatePopup={setToggleAlert}/>
+          )}
           {toggleForgot && (<div className="absolute z-40 w-full h-[30rem] bg-white flex  items-center rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                     <div className='p-6 space-y-4 md:space-y-6 sm:p-8  w-full' >
                         <label for="username" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Masukkan username atau NIM</label>
@@ -80,17 +88,17 @@ const LoginPage = ({setUser}) => {
                       <div class="flex items-center justify-between">
                           <div class="flex items-start">
                               <div class="flex items-center h-5">
-                                <input onClick={()=>setShowPassword(!showPassword)} id="remember" aria-describedby="remember" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required=""/>
+                                <input onClick={()=>setShowPassword(!showPassword)} id="remember" aria-describedby="remember" type="checkbox" class="cursor-pointer w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required=""/>
                               </div>
                               <div class="ml-3 text-sm">
                                 <label for="remember" class="text-gray-500 dark:text-gray-300">Show password</label>
                               </div>
                           </div>
-                          <p onClick={handleForgot} class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</p>
+                          <p onClick={handleForgot} class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500 cursor-pointer">Forgot password?</p>
                       </div>
                       <div onClick={()=>verifInput("login")} class="dark:text-gray-200 dark:hover:text-gray-400 ring-2 ring-gray-200 cursor-pointer hover:ring-gray-600 text-gray-900 w-full  bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</div>
                       <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                          Belum punya akun? <NavLink to={"/daftar"} class="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</NavLink>
+                          Belum punya akun? <NavLink to={"/daftar"} className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</NavLink>
                       </p>
                   </form>
               </div>

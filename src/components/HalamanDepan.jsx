@@ -69,7 +69,7 @@ Password: admin123
 
 Masuk Sebagai Mahasiswa 
 Username: nim (Contoh '11220910000059') 
-Password: 'Koko22'`
+Password: 'Kho123'`
 },
 ]
 const [active, setActive]=useState(listHelp[0].judul)

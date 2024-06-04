@@ -39,9 +39,13 @@ export default function PopupInfo ({refreshing, dataClicked, updatePopup, data, 
           {routePopup && (<div className='z-[99999] flex justify-center items-center w-screen h-screen fixed top-0 left-0'><MapWithSide setRoutePopup={setRoutePopup}  type={"showOnDash"}  h={`30rem`} w={"75%"} user={input}/></div>)}
         <div ref={ref} class={`w-full bg-red rounded-lg dark:border md:mt-0  xl:p-0 bg-[#1B2058] dark:border-gray-700`}>
               <div class="p-6 space-y-4 md:space-y-10 sm:p-8 ">
-                  <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl dark:text-white mb-10">
-                      Info data
-                  </h1>
+                  <div className="flex justify-between">
+                    <h1 class="text-xl font-bold leading-tight tracking-tight  md:text-4xl text-white mb-10">
+                        Info data
+                    </h1>
+                    <div onClick={()=>setRoutePopup(true)} className='hover:bg-opacity-70  hover:text-slate-300 px-4 py-2 h-10 text-center rounded bg-[#2743AF]  text-white cursor-pointer mr-2 transition-colors duration-300'>Rute</div>
+
+                  </div>
                   <form class="space-y-4 md:space-y-6" action="#">
                   
 
@@ -119,8 +123,7 @@ export default function PopupInfo ({refreshing, dataClicked, updatePopup, data, 
 
                       
                   </form>
-                  <div onClick={()=>setRoutePopup(true)} className='hover:bg-opacity-70  hover:text-slate-300 px-4 py-2 h-10 text-center rounded bg-[#2743AF]  text-white cursor-pointer mr-2 transition-colors duration-300'>Rute</div>
-              </div>
+                                </div>
           </div>
           
       </div>

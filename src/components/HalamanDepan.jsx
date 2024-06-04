@@ -43,20 +43,14 @@ function Bantuan({updatePopup}) {
   }, [ref]);
   
   const listHelp =[
-    {judul:"Bagaimana cara masuk sebagai admin dan mahasiswa?",
-    isi:`Masuk Sebagai Admin 
-    Username: admin123 
-    Password: admin123 
-
-    Masuk Sebagai Mahasiswa 
-    Username: nim (Contoh '11220910000059') 
-    Password: 'Koko22'`
-  },
-  {judul:"Bagaimana jika lupa password?",
-      isi:"Pada halaman login, terdapat pilihan lupa password. Jika diklik maka akan menampilkan form untuk username atau NIM. Jika anda bisa mengisinya dengan data yang benar maka, password akan ditampilkan di layar"
+    {judul:"Bagaimana jika lupa password?",
+    isi:"Pada halaman login, terdapat pilihan lupa password. Jika diklik maka akan menampilkan form untuk username atau NIM. Jika anda bisa mengisinya dengan data yang benar maka, password akan ditampilkan di layar"
     },
     {judul:"Bagaimana cara mendaftar?",
     isi:"Anda dapat mendaftar dengan mengunjungi halaman pendaftaran dan mengisi form yang disediakan secara valid, petunjuk pengisian dapat dilihan pada masing-masing form."
+  },
+    {judul:"Bagaimana cara mendapatkan informasi mahasiswa secara rinci?",
+    isi:"Anda dapat mengakses secara rinci data mahasiswa dengan mengklik baris data mahasiswa yang anda ingin."
   },
   {judul:"Bagaimana cara menambah data mahasiswa?",
   isi:"Kewenangan menambah data mahasiswa hanya dapat dilakukan oleh admin pada halaman dashboard, sedangkan untuk mahasiswa hanya bisa mendaftarkan akunnya."
@@ -67,17 +61,26 @@ isi:"Di halaman daftar, edit, dan tambah data terdapat form alamat berupa peta l
 {judul:"Apa yang harus dilakukan jika data mahasiswa tidak ditemukan?",
 isi:"Jika data mahasiswa tidak ditemukan, pastikan Anda telah memasukkan kata kunci pencarian yang benar. Jika masih tidak ditemukan, mungkin data tersebut belum diinput ke dalam sistem. Hubungi administrator untuk informasi lebih lanjut."
 },
+{judul:"Bagaimana cara masuk sebagai admin dan mahasiswa?",
+isi:`Masuk Sebagai Admin 
+Username: admin123 
+Password: admin123 
+
+Masuk Sebagai Mahasiswa 
+Username: nim (Contoh '11220910000059') 
+Password: 'Koko22'`
+},
 ]
 const [active, setActive]=useState(listHelp[0].judul)
 return(
     <div className={`w-screen z-[99999] cursor-pointer backdrop-blur-sm bg-white/30 h-screen fixed top-0 left-0 flex  justify-center items-center`}>
       <div className="font-semibold h-[60%] w-[50%] flex text-xl  rounded-lg overflow-clip" ref={ref}>
         <div className="side flex flex-col justify-evenly  bg-[#2743AF]  basis-2/5 text-white pt-2">
-          {listHelp.map((e,i)=>(<div key={i} onClick={()=>setActive(e.judul)} className={`hover:bg-[#1B2058] h-full ${e.judul==active?"  bg-opacity-70":""} flex flex-wrap border-b-2 border-black/10 text-lg px-5 py-2 `}>{e.judul}</div>))}
+          {listHelp.map((e,i)=>(<div key={i} onClick={()=>setActive(e.judul)} className={`hover:bg-[#1B2058] ${active==e.judul?"bg-[#1B2058]":""} h-full ${e.judul==active?"  bg-opacity-70":""} flex flex-wrap border-b-2 border-black/30 text-lg px-5 py-2 `}>{e.judul}</div>))}
         </div>
         <div className="isi flex flex-col justify-center gap-10 pl-14 px-20 bg-[#1A1C4F]  text-white basis-3/5">
           <p className=' text-2xl'>{active}</p>
-          {active==listHelp[0].judul?(<div>
+          {active==listHelp[6].judul?(<div>
             <p className='text-lg font-bold  mb-3'>Masuk Sebagai Admin:</p>
             <div className="flex flex-col text-lg gap-1 "><p>Username : admin123</p><p>Password  : admin123</p></div>
             <p className='text-lg font-bold  mb-3 mt-5'>Masuk Sebagai User:</p>

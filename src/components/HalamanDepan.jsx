@@ -74,8 +74,8 @@ Password: 'Koko22'`
 const [active, setActive]=useState(listHelp[0].judul)
 return(
     <div className={`w-screen z-[99999] cursor-pointer backdrop-blur-sm bg-white/30 h-screen fixed top-0 left-0 flex  justify-center items-center`}>
-      <div className="font-semibold h-[60%] w-[50%] flex text-xl  rounded-lg overflow-clip" ref={ref}>
-        <div className="side flex flex-col justify-evenly  bg-[#2743AF]  basis-2/5 text-white pt-2">
+      <div className="font-semibold  w-[50%] flex text-xl  rounded-lg overflow-clip" ref={ref}>
+        <div className="side flex flex-col justify-evenly w-fit bg-[#2743AF]  basis-2/5 text-white pt-2">
           {listHelp.map((e,i)=>(<div key={i} onClick={()=>setActive(e.judul)} className={`hover:bg-[#1B2058] ${active==e.judul?"bg-[#1B2058]":""} h-full ${e.judul==active?"  bg-opacity-70":""} flex flex-wrap border-b-2 border-black/30 text-lg px-5 py-2 `}>{e.judul}</div>))}
         </div>
         <div className="isi flex flex-col justify-center gap-10 pl-14 px-20 bg-[#1A1C4F]  text-white basis-3/5">

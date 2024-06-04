@@ -50,73 +50,73 @@ export default function PopupInfo ({refreshing, dataClicked, updatePopup, data, 
                   
 
                   <div className="mb-4" key="nama">
-    <label htmlFor="nama" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama:</label>
+    <label htmlFor="nama" className="block mb-2 text-sm font-medium text-white">Nama:</label>
     <input
         type="text"
         id="nama"
         name="nama"
         readOnly={true}
         defaultValue={dataClicked["nama"]}
-        className="w-[40rem]  border-gray-300 backdrop-blur-sm bg-white/15 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="w-[40rem] text-white border-gray-300 backdrop-blur-sm bg-white/15 text-whitesm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     />
 </div>
 <div className="mb-4" key="NIM">
-    <label htmlFor="NIM" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NIM:</label>
+    <label htmlFor="NIM" className="block mb-2 text-sm font-medium text-white dark:text-white">NIM:</label>
     <input
         type="text"
         id="NIM"
         name="NIM"
         readOnly={true}
         defaultValue={dataClicked["NIM"]}
-        className="w-[40rem] border-gray-300 backdrop-blur-sm bg-white/15 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="w-[40rem] border-gray-300 backdrop-blur-sm bg-white/15 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     />
 </div>
 
 <div className="mb-4" key="tglLahir">
-    <label htmlFor="tglLahir" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Lahir:</label>
+    <label htmlFor="tglLahir" className="block mb-2 text-sm font-medium text-white dark:text-white">Tanggal Lahir:</label>
     <input
         type="text"
         id="tglLahir"
         name="tglLahir"
         readOnly={true}
         defaultValue={dataClicked["tglLahir"]}
-        className="w-[40rem] border-gray-300 backdrop-blur-sm bg-white/15 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="w-[40rem] border-gray-300 backdrop-blur-sm bg-white/15 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     />
 </div>
 
 <div className="mb-4" key="telp">
-    <label htmlFor="telp" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor Telephone:</label>
+    <label htmlFor="telp" className="block mb-2 text-sm font-medium text-white dark:text-white">Nomor Telephone:</label>
     <input
         type="text"
         id="telp"
         name="telp"
         readOnly={true}
         defaultValue={dataClicked["telp"]}
-        className="w-[40rem] border-gray-300 backdrop-blur-sm bg-white/15 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="w-[40rem] border-gray-300 backdrop-blur-sm bg-white/15 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     />
 </div>
 
 <div className="mb-4" key="kesukaan">
-    <label htmlFor="kesukaan" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kesukaan:</label>
+    <label htmlFor="kesukaan" className="block mb-2 text-sm font-medium text-white dark:text-white">Kesukaan:</label>
     <input
         type="text"
         id="kesukaan"
         name="kesukaan"
         readOnly={true}
         defaultValue={dataClicked["kesukaan"]}
-        className="w-[40rem] border-gray-300 backdrop-blur-sm bg-white/15 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="w-[40rem] border-gray-300 backdrop-blur-sm bg-white/15 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     />
 </div>
 
 <div className="mb-4" key="alamat">
-    <label htmlFor="alamat" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat:</label>
+    <label htmlFor="alamat" className="block mb-2 text-sm font-medium text-white dark:text-white">Alamat:</label>
     <input
         type="text"
         id="alamat"
         name="alamat"
         readOnly={true}
         defaultValue={dataClicked["alamat"].nama}
-        className="w-[40rem] border-gray-300 backdrop-blur-sm bg-white/15 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="w-[40rem] border-gray-300 backdrop-blur-sm bg-white/15 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     />
 </div>
 

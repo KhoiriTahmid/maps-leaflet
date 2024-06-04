@@ -131,7 +131,7 @@ export default function Daftar ({refreshing, setToggleAlert, setUser, typeTambah
           )}
         <div class={`w-full bg-red rounded-lg ${typeTambah=="tambahUser"?"shadow":""} dark:border md:mt-0 xl:p-0 h-full bg-[#1A1C4F] dark:border-gray-700`}>
               <div class="p-6 space-y-4 md:space-y-6 sm:p-8 ">
-                  <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl dark:text-white mt-10 mb-20">
+                  <h1 class="text-xl font-bold leading-tight tracking-tight  text-white  md:text-4xl dark:text-white mt-10 mb-20">
                       {typeTambah=="tambahUser" ? "Daftarkan akunmu":"Tambah data"}
                   </h1>
                   <form class="space-y-4 md:space-y-6 pb-1" action="#">
@@ -141,7 +141,7 @@ export default function Daftar ({refreshing, setToggleAlert, setUser, typeTambah
                     
                     return (key !== "alamat" && key !== "userName" && key !== "pass") && (
                         <div className="mb-4" key={key}>
-                        <label htmlFor={key} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{syaratCuy[index]}</label>
+                        <label htmlFor={key} className="block mb-2 text-sm font-medium  text-white  dark:text-white">{syaratCuy[index]}</label>
                         <input
                             ref={inputRefs[key]}
                             type={key=='tglLahir'?'date':key=='pass'?"password":"text"}
@@ -163,16 +163,16 @@ export default function Daftar ({refreshing, setToggleAlert, setUser, typeTambah
               <div class="p-6 my-1.5 sm:p-8 ">
                   <form class="space-y-4 md:space-y-6 " action="#">
                       <div>
-                          <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">username</label>
-                          <input ref={inputRefs.userName} placeholder={syarat.username} onChange={(e)=> verifInput("userName", e.target)} type="text" name="email" id="email" class="backdrop-blur-sm bg-white/15   border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required=""/>
+                          <label for="username" class="block mb-2 text-sm font-medium  text-white  dark:text-white">username</label>
+                          <input ref={inputRefs.userName} placeholder={syarat.username} onChange={(e)=> verifInput("userName", e.target)} type="text" name="email" id="email" class="backdrop-blur-sm bg-white/15   border border-gray-300  text-white  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required=""/>
                       </div>
                       <div>
-                          <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                          <input ref={inputRefs.pass} placeholder={syarat.password} onChange={(e)=> verifInput("pass", e.target)} type="text" name="password" id="password" class="backdrop-blur-sm bg-white/15   border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
+                          <label for="password" class="block mb-2 text-sm font-medium  text-white  dark:text-white">Password</label>
+                          <input ref={inputRefs.pass} placeholder={syarat.password} onChange={(e)=> verifInput("pass", e.target)} type="text" name="password" id="password" class="backdrop-blur-sm bg-white/15   border border-gray-300  text-white  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
                       </div>
 
                       <div>
-                          <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                          <label for="password" class="block mb-2 text-sm font-medium  text-white  dark:text-white">Password</label>
                           <Map  type={'tambah'} verifInput={verifInput} h={`20rem`} w={"75%"}/>
                       </div>
 

@@ -20,7 +20,7 @@ const Component = ({value, type, updatePopup}) => {
 
   return (
     <div className={`w-screen z-[99999] cursor-pointer backdrop-blur-sm bg-white/30 h-screen fixed top-0 left-0 flex  ${type=="pojok"? "justify-end items-end p-10":"justify-center items-center"}`}>
-      <div className="font-semibold text-xl p-24 bg-gray-800 " ref={ref}>
+      <div className="font-semibold text-xl p-24 bg-[#1A1C4F] rounded-xl text-white" ref={ref}>
         {value}
       </div>
     </div>

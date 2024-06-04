@@ -115,11 +115,11 @@ export default function Update ({refreshing, setToggleAlert, dataClicked, typeTa
   
 
   return (
-    <section class={` cursor-pointer w-screen h-screen my-auto flex justify-center items-center bg-white ${typeTambah!="tambahUser"? "bg-opacity-50 backdrop-blur-lg":""} dark:bg-gray-900`}>
+    <section class={` cursor-pointer w-screen h-screen my-auto flex justify-center items-center  ${typeTambah!="tambahUser"? "bg-opacity-50 backdrop-blur-lg":""} bg-gradient-to-r from-[#1A1C4F] to-[#284BC3]`}>
       <div ref={ref} class={`flex  gap-6 items-center ${typeTambah!="tambahUser"?"shadow  w-fit rounded-2xl":""} justify-center mx-auto lg:py-0`}>
           {routePopup && (<div className='z-[99999] flex justify-center items-center w-screen h-screen fixed top-0 left-0'><MapWithSide setRoutePopup={setRoutePopup}  type={"showOnDash"}  h={`30rem`} w={"75%"} user={input}/></div>)}
 
-        <div class={`w-full bg-red rounded-lg ${typeTambah=="tambahUser"?"shadow":""} dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700`}>
+        <div class={`w-full bg-red rounded-lg ${typeTambah=="tambahUser"?"shadow":""}  md:mt-0 xl:p-0 bg-[#1A1C4F]`}>
               <div class="p-6 space-y-4 md:space-y-6 sm:p-8 ">
                   <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl dark:text-white mb-10 mt-10">
                       Update data
@@ -138,7 +138,7 @@ export default function Update ({refreshing, setToggleAlert, dataClicked, typeTa
                             min={key=="tglLahir"?'2000-01-01':''}
                             max={key=="tglLahir"?'2007-01-01':''}
                             onChange={(e) => verifInput(key, e.target)}
-                            className="w-[25rem] bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            className="w-[25rem] pl-4  backdrop-blur-sm bg-white/15  rounded-lg text-white sm:text-sm focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         />
                         </div>
                     ))}
@@ -146,20 +146,20 @@ export default function Update ({refreshing, setToggleAlert, dataClicked, typeTa
                   </form>
               </div>
           </div>
-          <div class={`w-full bg-red rounded-lg ${typeTambah=="tambahUser"?"shadow":""} dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700`}>
+          <div class={`w-full bg-red rounded-lg ${typeTambah=="tambahUser"?"shadow":""} md:mt-0 xl:p-0 bg-[#1A1C4F]`}>
               <div class="px-7 space-y-4  py-[2.10rem] ">
                   <form class="space-y-4 md:space-y-6 " action="#">
                       <div>
-                          <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">username</label>
-                          <input ref={inputRefs.userName} defaultValue={dataClicked.userName} onChange={(e)=> verifInput("userName", e.target)} type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required=""/>
+                          <label for="username" class="block mb-2 text-sm font-medium  b text-white">username</label>
+                          <input ref={inputRefs.userName} defaultValue={dataClicked.userName} onChange={(e)=> verifInput("userName", e.target)} type="text" name="email" id="email" class="border border-gray-300 backdrop-blur-sm bg-white/15 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required=""/>
                       </div>
                       <div>
-                          <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                          <input ref={inputRefs.pass} defaultValue={dataClicked.pass} onChange={(e)=> verifInput("pass", e.target)} type="text" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
+                          <label for="password" class="block mb-2 text-sm font-medium text-white  ">Password</label>
+                          <input ref={inputRefs.pass} defaultValue={dataClicked.pass} onChange={(e)=> verifInput("pass", e.target)} type="text" name="password" id="password" class="border border-gray-300 backdrop-blur-sm bg-white/15 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
                       </div>
 
                       <Map setRoutePopup={setRoutePopup} data={dataClicked} type={'tambah'} verifInput={verifInput} h={`20rem`} w={"75%"}/>                     
-                      <div onClick={()=>handleSave()} class=" ring-2 ring-gray-200 cursor-pointer hover:ring-gray-600 text-gray-900 w-full  bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">update data</div>
+                      <div onClick={()=>handleSave()} class="  cursor-pointer hover:ring-gray-600 text-white hover:bg-opacity-70 w-full  bg-[#2743AF] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:hover:bg-primary-700 dark:focus:ring-primary-800">update data</div>
                       
                   </form>
               </div>

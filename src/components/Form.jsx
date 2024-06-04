@@ -90,10 +90,10 @@ export default function Form({setPopup, user, setUser, type, refreshing,elementL
   }
 
   return (
-    <div className={` bg-gray-900 p-6 rounded-lg shadow-lg `}>
+    <div className={` bg-[#1B2058] p-6 rounded-lg shadow-lg `}>
       {Object.keys(input).map(key => (key !== "alamat") && (
         <div className="mb-4" key={key}>
-          <label htmlFor={key} className="block text-yellow-500 mb-2">{key.charAt(0).toUpperCase() + key.slice(1)}:</label>
+          <label htmlFor={key} className="block text-white/80 mb-2">{key.charAt(0).toUpperCase() + key.slice(1)}:</label>
           <input
             readOnly={!editable}
             type={key=='tglLahir'?'date':"text"}
@@ -104,12 +104,12 @@ export default function Form({setPopup, user, setUser, type, refreshing,elementL
             max={key=="tglLahir"?'2007-01-01':''}
             defaultValue={user[key]}
             onChange={(e) => verifInput(key, e.target)}
-            className="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
+            className="w-full p-2 border border-gray-600 rounded backdrop-blur-sm bg-white/15 text-white"
           />
         </div>
       ))}
       <div className="mb-4">
-        <label className="block text-yellow-500 mb-2">Alamat:</label>
+        <label className="block text-white/80 mb-2">Alamat:</label>
           {editable? <Map type={type} verifInput={verifInput} h={`30rem`} w={"75%"} user={user}/>:<MapWithSide  type={type} verifInput={verifInput} h={`30rem`} w={"75%"} user={user}/>}
       </div>
       <div className='flex'>

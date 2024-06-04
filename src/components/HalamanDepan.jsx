@@ -11,14 +11,14 @@ export default function HalamanDepan({refresh, data, setData}) {
   const [help, setHelp] = useState(false)
   
   return (
-    <div className='flex flex-col gap-10 w-screen h-screen pt-14 items-center '>
+    <div className='flex flex-col gap-10 w-screen h-screen pt-14 items-center  bg-gradient-to-r from-[#1A1C4F] to-[#284BC3] '>
       {help && <Bantuan updatePopup={setHelp}/>}
       <Tabel refresh={refresh} data={data} setData={setData}/>
       <div className="cta flex gap-10">
-        <NavLink to={'/login'} className="login flex justify-center items-center rounded-xl ring-1 ring-black cursor-pointer py-1.5 px-3 hover:bg-gray-700 hover:text-gray-100 hover:ring-slate-700">Login</NavLink>
-        <NavLink to={'/daftar'} className="login flex justify-center items-center rounded-xl ring-1 ring-black cursor-pointer py-1.5 px-3 hover:bg-gray-700 hover:text-gray-100 hover:ring-slate-700">Daftar</NavLink>
+        <NavLink to={'/login'} className="login text-xl flex justify-center items-center rounded-xl text-white  ring-1 ring-white bg-[#2743AF] cursor-pointer py-1.5 px-3 hover:bg-[#1B2058] hover:text-gray-500 hover:ring-slate-700">Login</NavLink>
+        <NavLink to={'/daftar'} className="login text-xl flex justify-center items-center rounded-xl text-white  ring-1 ring-white bg-[#2743AF] cursor-pointer py-1.5 px-3 hover:bg-[#1B2058] hover:text-gray-500 hover:ring-slate-700">Daftar</NavLink>
       </div>
-      <div onClick={()=>setHelp(true)} className="  cursor-pointer fixed right-10 bottom-10 p-3 bg-slate-700">bantuan?</div>
+      <div onClick={()=>setHelp(true)} className="  cursor-pointer fixed right-10 bottom-10 px-5 py-3 rounded-3xl text-white text-xl hover:bg-[#2743AF] ring-1 ring-white bg-[#1B2058] ">bantuan?</div>
     </div>
   )
 }
@@ -71,11 +71,11 @@ isi:"Jika data mahasiswa tidak ditemukan, pastikan Anda telah memasukkan kata ku
 const [active, setActive]=useState(listHelp[0].judul)
 return(
     <div className={`w-screen z-[99999] cursor-pointer backdrop-blur-sm bg-white/30 h-screen fixed top-0 left-0 flex  justify-center items-center`}>
-      <div className="font-semibold h-[60%] w-[50%] flex text-xl bg-gray-800 rounded-lg overflow-clip" ref={ref}>
-        <div className="side flex flex-col justify-evenly  bg-slate-500 basis-2/5">
-          {listHelp.map((e,i)=>(<div key={i} onClick={()=>setActive(e.judul)} className={` ${e.judul==active?"bg-opacity-70":""} flex flex-wrap border-b-2 border-black/10 text-lg px-5 py-2 `}>{e.judul}</div>))}
+      <div className="font-semibold h-[60%] w-[50%] flex text-xl  rounded-lg overflow-clip" ref={ref}>
+        <div className="side flex flex-col justify-evenly  bg-[#2743AF]  basis-2/5 text-white pt-2">
+          {listHelp.map((e,i)=>(<div key={i} onClick={()=>setActive(e.judul)} className={`hover:bg-[#1B2058] h-full ${e.judul==active?"  bg-opacity-70":""} flex flex-wrap border-b-2 border-black/10 text-lg px-5 py-2 `}>{e.judul}</div>))}
         </div>
-        <div className="isi flex flex-col justify-center gap-10 pl-14 px-20 bg-slate-200 basis-3/5">
+        <div className="isi flex flex-col justify-center gap-10 pl-14 px-20 bg-[#1A1C4F]  text-white basis-3/5">
           <p className=' text-2xl'>{active}</p>
           {active==listHelp[0].judul?(<div>
             <p className='text-lg font-bold  mb-3'>Masuk Sebagai Admin:</p>
@@ -123,13 +123,13 @@ const Tabel = ({refresh, data, setData}) => {
   return (
     <>
     <section className="section p-10 pt-0 h-fit w-[70%]">
-      <h2 className="text-4xl font-bold text-black text-center mb-4">Data Kelas</h2>
-      <div className="w-full h-1 bg-black mb-5"></div>
+      <h2 className="text-4xl font-bold text-white text-center mb-4">Data Kelas</h2>
+      <div className="w-full h-1 bg-white mb-5"></div>
       <div className="mb-4">
         <input 
           type="text" 
           id="search-input" 
-          className="w-full p-2 border border-gray-600 rounded  text-black"
+          className="w-full p-2 pl-4  backdrop-blur-sm bg-white/15  rounded-lg  text-white"
           placeholder="Cari Nama atau NIM..."
           value={search}
           onChange={(e) => {setSearch(e.target.value); filterData(e.target.value) }}
@@ -138,24 +138,24 @@ const Tabel = ({refresh, data, setData}) => {
       <div className="overflow-x-auto">
         <table className="min-w-full bg-gray-900 text-white">
           <thead className='block'>
-            <tr style={{ display: 'table',  tableLayout: 'fixed' }} className='w-full text-black border-b-2 border-b-gray-600'>
-              <th className="py-2 px-4 text-left   bg-gray-100">Name</th>
-              <th className="py-2 px-4 text-left bg-gray-100">NIM</th>
-              <th className="py-2 px-4 text-left  bg-gray-100">Tanggal Lahir</th>
-              <th className="py-2 px-4 text-left bg-gray-100">Alamat</th>
-              <th className="py-2 px-4 text-left  bg-gray-100">Nomor Telepon</th>
-              <th className="py-2 px-4 text-left  bg-gray-100">Favorite</th>
+            <tr style={{ display: 'table',  tableLayout: 'fixed' }} className='w-full bg-[#2443AE] text-white border-b-2 border-b-gray-600'>
+              <th className="py-2 px-4 border text-left   ">Name</th>
+              <th className="py-2 px-4 border text-left">NIM</th>
+              <th className="py-2 px-4 border text-left  ">Tanggal Lahir</th>
+              <th className="py-2 px-4 border text-left ">Alamat</th>
+              <th className="py-2 px-4 border text-left  ">Nomor Telepon</th>
+              <th className="py-2 px-4 border text-left  ">Favorite</th>
             </tr>
           </thead>
           <tbody className="custom-inset-shadow overflow-y-auto no-scrollbar w-[100%] " style={{ maxHeight: '25rem', display: 'block' }}>
             {filteredData.map((el, index) => (
-              <tr key={index} style={{ display: 'table', tableLayout: 'fixed' }} onClick={()=>{setRoute(!route); setClicked(el)}} className={`w-full cursor-pointer hover:bg-gray-700 hover:text-gray-100 ${index % 2 === 0 ? 'bg-gray-100  text-black' : 'bg-gray-300  text-black'}`}>
-                <td className="py-2 px-4">{el.nama.slice(0,20)}{el.kesukaan.length>20?'...':''}</td>
-                <td className="py-2 px-4">{el.NIM}</td>
-                <td className="py-2 px-4">{el.tglLahir}</td>
-                <td className="py-2 px-4">{el.alamat.nama.slice(0,30)}...</td>
-                <td className="py-2 px-4">{el.telp}</td>
-                <td className="py-2 px-4">{el.kesukaan.slice(0,15)}{el.kesukaan.length>15?'...':''}</td>
+              <tr key={index} style={{ display: 'table', tableLayout: 'fixed' }} onClick={()=>{setRoute(!route); setClicked(el)}} className={`w-full cursor-pointer border hover:bg-gray-900 hover:text-gray-100 ${index % 2 === 0 ? 'bg-[#1B2058]  text-white' : 'bg-[#1B2058] text-white'}`}>
+                <td className="py-2 border px-4">{el.nama.slice(0,20)}{el.kesukaan.length>20?'...':''}</td>
+                <td className="py-2 border px-4">{el.NIM}</td>
+                <td className="py-2 border px-4">{el.tglLahir}</td>
+                <td className="py-2 border px-4">{el.alamat.nama.slice(0,30)}...</td>
+                <td className="py-2 border px-4">{el.telp}</td>
+                <td className="py-2 border px-4">{el.kesukaan.slice(0,15)}{el.kesukaan.length>15?'...':''}</td>
               </tr>
             ))}
           </tbody>

@@ -50,7 +50,7 @@ const SideInfo = ({ infoMap, user }) => {
     return (
       <>
         {infoMap != null ? (
-          <div className="pl-3 gap-2 flex flex-col h-[94vh] basis-2/5 text-slate-100 bg-slate-800 z-10 px-5 overflow-y-auto">
+          <div className="pl-3 gap-2 flex flex-col h-[94vh] basis-2/5 text-slate-100 bg-[#1B2058]  z-10 px-5 overflow-y-auto">
             <div className="header mb-3 mt-3 flex flex-col gap-3 text-xl font-bold">
               <p>Asal: FST</p>
               <p className="break-words">Tujuan: {user.alamat.nama}</p>
@@ -58,7 +58,7 @@ const SideInfo = ({ infoMap, user }) => {
                 {Math.floor(infoMap[0].summary.totalTime / 60)} menit ({Math.floor(infoMap[0].summary.totalDistance / 1000)} km)
               </p>
             </div>
-            <div className="flex-grow overflow-y-auto">
+            <div className="flex-grow overflow-y-auto bg-[#1A1C4F] ">
               {infoMap[0].instructions.map((e, index) => (
                 <div key={index} className="mb-4">
                   <p className="text-lg font-semibold">
@@ -70,7 +70,7 @@ const SideInfo = ({ infoMap, user }) => {
             </div>
           </div>
         ) : (
-          <div className="pl-3 gap-2 h-[30rem] w-[35%] text-slate-100 bg-slate-800 z-10 text-3xl flex  justify-center items-center">
+          <div className="pl-3 gap-2 h-[30rem] w-[35%] text-slate-100 [#1A1C4F]  z-10 text-3xl flex  justify-center items-center">
             Memuat rute...
           </div>
         )}

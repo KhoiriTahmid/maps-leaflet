@@ -124,12 +124,12 @@ export default function Daftar ({refreshing, setToggleAlert, setUser, typeTambah
   
 
   return (
-    <section class={` cursor-pointer w-screen h-screen my-auto flex justify-center items-center bg-white ${typeTambah!="tambahUser"? "bg-opacity-50 backdrop-blur-lg":""} dark:bg-gray-900`}>
-      <div ref={ref} class={`flex  gap-6 items-center ${typeTambah!="tambahUser"?"shadow w-fit rounded-2xl":""} justify-center mx-auto`}>
+    <section class={` cursor-pointer w-screen h-screen my-auto flex justify-center items-center  bg-gradient-to-r from-[#1A1C4F] to-[#284BC3] ${typeTambah!="tambahUser"? "bg-opacity-50 backdrop-blur-lg":""} `}>
+      <div ref={ref} class={`flex  gap-6 items-center ${typeTambah!="tambahUser"?"shadow w-fit rounded-2xl":""}  justify-center mx-auto`}>
       {toggleAlerto!="" && (
               <UniversalPopup value={toggleAlerto} type={toggleAlerto=="berhasil login"? "pojok":"center"} updatePopup={seToggleAlerto}/>
           )}
-        <div class={`w-full bg-red rounded-lg ${typeTambah=="tambahUser"?"shadow":""} dark:border md:mt-0 xl:p-0 h-full dark:bg-gray-800 dark:border-gray-700`}>
+        <div class={`w-full bg-red rounded-lg ${typeTambah=="tambahUser"?"shadow":""} dark:border md:mt-0 xl:p-0 h-full bg-[#1A1C4F] dark:border-gray-700`}>
               <div class="p-6 space-y-4 md:space-y-6 sm:p-8 ">
                   <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl dark:text-white mt-10 mb-20">
                       {typeTambah=="tambahUser" ? "Daftarkan akunmu":"Tambah data"}
@@ -151,7 +151,7 @@ export default function Daftar ({refreshing, setToggleAlert, setUser, typeTambah
                             min={key=="tglLahir"?'2000-01-01':''}
                             max={key=="tglLahir"?'2007-01-01':''}
                             onChange={(e) => verifInput(key, e.target)}
-                            className={` w-[25rem] bg-gray-50 border  text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-700  dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                            className={` w-[25rem] backdrop-blur-sm bg-white/15   border border-gray-300 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                         />
                         </div>
                     )})}
@@ -159,16 +159,16 @@ export default function Daftar ({refreshing, setToggleAlert, setUser, typeTambah
                   </form>
               </div>
           </div>
-          <div class={`w-full bg-red rounded-lg ${typeTambah=="tambahUser"?"shadow":""} dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700`}>
+          <div class={`w-full bg-[#1A1C4F] rounded-lg ${typeTambah=="tambahUser"?"shadow":""} dark:border md:mt-0 xl:p-0  dark:border-gray-700`}>
               <div class="p-6 my-1.5 sm:p-8 ">
                   <form class="space-y-4 md:space-y-6 " action="#">
                       <div>
                           <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">username</label>
-                          <input ref={inputRefs.userName} placeholder={syarat.username} onChange={(e)=> verifInput("userName", e.target)} type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required=""/>
+                          <input ref={inputRefs.userName} placeholder={syarat.username} onChange={(e)=> verifInput("userName", e.target)} type="text" name="email" id="email" class="backdrop-blur-sm bg-white/15   border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required=""/>
                       </div>
                       <div>
                           <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                          <input ref={inputRefs.pass} placeholder={syarat.password} onChange={(e)=> verifInput("pass", e.target)} type="text" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
+                          <input ref={inputRefs.pass} placeholder={syarat.password} onChange={(e)=> verifInput("pass", e.target)} type="text" name="password" id="password" class="backdrop-blur-sm bg-white/15   border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
                       </div>
 
                       <div>
@@ -178,7 +178,7 @@ export default function Daftar ({refreshing, setToggleAlert, setUser, typeTambah
 
                       
                       
-                      <div onClick={()=>handleSave()} class=" ring-2 ring-gray-200 cursor-pointer hover:ring-gray-600 text-gray-900 w-full  bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">{typeTambah=="tambahUser"? "Sign Up": "tambah data"}</div>
+                      <div onClick={()=>handleSave()} class=" cursor-pointer hover:bg-opacity-70 text-white w-full  bg-[#2743AF]  hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">{typeTambah=="tambahUser"? "Sign Up": "tambah data"}</div>
                       {typeTambah=="tambahUser" && (<p class="text-sm font-light text-gray-500 dark:text-gray-400">
                           already have an account? <NavLink to={'/login'} class="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign in</NavLink>
                       </p>)}

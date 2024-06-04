@@ -60,49 +60,49 @@ const AdminDashboard = ({refresh, setUser, refreshing, user, data, setData}) => 
   console.log(data)
 
   return (
-    <div className="bg-slate-950 h-screen w-screen flex justify-center">
+    <div className="bg-gradient-to-r from-[#1A1C4F] to-[#284BC3] h-screen w-screen flex justify-center">
       <section className={`section p-10 pt-12 w-[90%] ${route?"z-[9999]":""}`}>{/* kalo kepanjangan, edit aja */}
       {toggleAlert!="" && (
               <UniversalPopup value={toggleAlert} type={toggleAlert=="berhasil login"? "pojok":"center"} updatePopup={setToggleAlert}/>
           )}
-        <h2 className="text-5xl font-bold text-yellow-500 text-center mb-8">Data Kelas</h2>
-        <div className="w-full h-1 bg-yellow-500 mb-5"></div>
+        <h2 className="text-5xl font-bold text-white text-center mb-8">Data Kelas</h2>
+        <div className="w-full h-1 bg-white mb-5"></div>
         <div className="mb-4 flex gap-4">
           <input 
             type="text" 
             id="search-input" 
-            className="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
+            className="w-full p-2 pl-4  backdrop-blur-sm bg-white/15  rounded-lg text-white"
             placeholder="Cari Nama atau NIM..."
             value={search}
             onChange={(e) => {setSearch(e.target.value); filterData(e.target.value) }}
           />
-          <div onClick={()=>updatePopup("tambah")} className='px-4 py-2 h-10 w-fit text-center rounded bg-green-500 text-white cursor-pointer mr-2 transition-colors duration-300'>tambah</div> 
+          <div onClick={()=>updatePopup("tambah")} className='px-4 py-2 h-10 w-fit text-center rounded bg-[#2743AF] ring-1 ring-white text-white cursor-pointer mr-2 transition-colors duration-300'>tambah</div> 
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-gray-900 text-white border-collapse">
             <thead className='block'>
-              <tr style={{ display: 'table', width: '100%', tableLayout: 'fixed' }} className='text-yellow-500 border-b-2 border-b-yellow-500'>
-                <th className="py-2 px-4 text-left bg-gray-700">Nama</th>
-                <th className="py-2 px-4 text-left bg-gray-700">NIM</th>
-                <th className="py-2 px-4 text-left bg-gray-700">Tanggal Lahir</th>
-                <th className="py-2 px-4 text-left bg-gray-700">Alamat</th>
-                <th className="py-2 px-4 text-left bg-gray-700">Nomor Telepon</th>
-                <th className="py-2 px-4 text-left bg-gray-700">Kesukaan</th>
-                <th className="py-2 px-4 text-left bg-gray-700">Action</th>
+              <tr style={{ display: 'table', width: '100%', tableLayout: 'fixed' }} className='bg-[#2443AE] text-white border-b-2 border-b-gray-600 w-full'>
+                <th className="py-2 px-4 text-left border">Nama</th>
+                <th className="py-2 px-4 text-left border">NIM</th>
+                <th className="py-2 px-4 text-left border">Tanggal Lahir</th>
+                <th className="py-2 px-4 text-left border">Alamat</th>
+                <th className="py-2 px-4 text-left border">Nomor Telepon</th>
+                <th className="py-2 px-4 text-left border">Kesukaan</th>
+                <th className="py-2 px-4 text-left border">Action</th>
               </tr>
             </thead>
             <tbody className="custom-inset-shadow overflow-y-auto no-scrollbar w-[100%] " style={{ maxHeight: '30rem', display: 'block' }}>
               {filteredData.map((data, index) => (
-                <tr onClick={()=>{setClickedData(data); setBarisClicked(true)}} key={index} style={{ display: 'table', width: '100%', tableLayout: 'fixed' }} className={`cursor-pointer hover:bg-gray-400 hover:text-black ${index % 2 === 0 ? 'bg-gray-800' : 'bg-gray-700'}`}>
-                  <td className="py-2 px-4">{data.nama.slice(0,20)}{data.nama.length>20?'...':''}</td>
-                  <td className="py-2 px-4">{data.NIM}</td>
-                  <td className="py-2 px-4">{data.tglLahir}</td>
-                  <td className="py-2 px-4">{data.alamat.nama.slice(0,30)}...</td>
-                  <td className="py-2 px-4">{data.telp}</td>
-                  <td className="py-2 px-4">{data.kesukaan.slice(0,20)}{data.kesukaan.length>20?'...':''}</td>
-                  <td className="py-2 px-4 flex">
+                <tr onClick={()=>{setClickedData(data); setBarisClicked(true)}} key={index} style={{ display: 'table', width: '100%', tableLayout: 'fixed' }} className={`cursor-pointer hover:bg-gray-700  ${index % 2 === 0 ? 'bg-[#1B2058]  text-white' : 'bg-[#1B2058] text-white'}`}>
+                  <td className="py-2 border px-4">{data.nama.slice(0,20)}{data.nama.length>20?'...':''}</td>
+                  <td className="py-2 border px-4">{data.NIM}</td>
+                  <td className="py-2 border px-4">{data.tglLahir}</td>
+                  <td className="py-2 border px-4">{data.alamat.nama.slice(0,30)}...</td>
+                  <td className="py-2 border px-4">{data.telp}</td>
+                  <td className="py-2 border px-4">{data.kesukaan.slice(0,20)}{data.kesukaan.length>20?'...':''}</td>
+                  <td className="py-2 border px-4 h-[4.15rem] flex ">
                     <Button onClick={(event) => event.stopPropagation()}  setClickedData={setClickedData} data={data} setBarisClicked={setRoute} updatePopup={updatePopup} refresh={refresh} refreshing={refreshing} admin={user} teks={'Edit'} type={'edit'} NIM={data.NIM}/>
-                    <div onClick={(event) => {remove(event, data)}} className='px-4 py-2 h-10 text-center rounded bg-green-500 text-white cursor-pointer mr-2 transition-colors duration-300'>hapus</div>
+                    <div onClick={(event) => {remove(event, data)}} className='ring-1 ring-white px-4 py-2 h-10 text-center rounded bg-[#2743AF]  text-white cursor-pointer mr-2 transition-colors duration-300'>hapus</div>
                   </td>
                 </tr>
               ))}
@@ -135,7 +135,7 @@ function Button({teks, setBarisClicked, type, admin, NIM, data, setClickedData ,
   }
 
   return (
-    <div onClick={handle} className='px-4 py-2 h-10 text-center rounded bg-green-500 text-white cursor-pointer mr-2 transition-colors duration-300'>{teks}</div>
+    <div onClick={handle} className='px-4 py-2 h-10 text-center rounded bg-[#2743AF] ring-1 ring-white text-white cursor-pointer mr-2 transition-colors duration-300'>{teks}</div>
   )
 }
 

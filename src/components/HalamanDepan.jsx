@@ -139,7 +139,7 @@ const Tabel = ({refresh, data, setData}) => {
           onChange={(e) => {setSearch(e.target.value); filterData(e.target.value) }}
         />
       </div>
-      <div className="overflow-x-auto text-md">
+      <div className="overflow-x-auto text-sm">
         <table className="min-w-full bg-gray-900 text-white">
           <thead className='block'>
             <tr style={{ display: 'table',  tableLayout: 'fixed' }} className='w-full bg-[#2443AE] text-white border-b-2 border-b-gray-600'>

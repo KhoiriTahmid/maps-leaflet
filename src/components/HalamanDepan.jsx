@@ -126,7 +126,7 @@ const Tabel = ({refresh, data, setData}) => {
 
   return (
     <>
-    <section className="section p-10 pb-0 pt-0 h-fit w-[60%]">
+    <section className="section p-10 pb-0 pt-0 h-fit w-[50%]">
       <h2 className="text-3xl font-bold text-white text-center mb-4">Data Kelas</h2>
       <div className="w-full h-1 bg-white mb-5"></div>
       <div className="mb-4">
